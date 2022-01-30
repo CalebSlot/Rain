@@ -5,7 +5,9 @@
 package com.mycompany.rain;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,6 +92,26 @@ public class Game extends Canvas implements Runnable
          createBufferStrategy(3);
          return;
      }
+     
+     
+     //current graphic context
+     Graphics g = bs.getDrawGraphics();
+     //drow suffs here...
+     //draw on the temp buffer
+     
+     drawBlackRectangleFullSize(g);
+     
+     //relase current display resources associated with the current buffer
+     g.dispose();
+     
+     //display the next available buffer (swap)
+     bs.show();
+    }
+
+    private void drawBlackRectangleFullSize(Graphics g) 
+    {
+      g.setColor(Color.black);
+      g.fillRect(0,0, getWidth(), getHeight());
     }
             
             

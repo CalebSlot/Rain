@@ -9,42 +9,51 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
- *
+ * Norway Today netbeans Tools options font e colors
  * @author Alessandro
  */
 public class Game extends Canvas implements Runnable
 {
     private static final long serialVersionUID = 1L;
     
-    public static int WIDTH  = 300;
-    public static int HEIGHT = WIDTH / 16 * 9;
-    public static int SCALE  = 3;
+    public static final int FRAME_WIDTH  = 300;
+    public static final float RESOULTION_W = 16f / 9f;
+    public static final float RESOLUTION_H = 9f / 16f;
+    public static final int FRAME_HEIGHT = (int)(FRAME_WIDTH * RESOLUTION_H);
+    public static final int SCALE  = 3;
     
     private Thread m_oThread;
     private JFrame m_oFrame;
-    private boolean running = false;
+    private boolean m_bRunning = false;
     
+    //this will be our raster image where we will be write custom pixels value
+    private BufferedImage m_oImage = new BufferedImage(FRAME_WIDTH,FRAME_HEIGHT,BufferedImage.TYPE_INT_RGB);
+    //the raw pixel as ints
+    private int[] m_viPixel = ((DataBufferInt)m_oImage.getRaster().getDataBuffer()).getData();
+            
     public Game()
     {
-        Dimension size = new Dimension(WIDTH * SCALE,HEIGHT * SCALE);
+        Dimension size = new Dimension(FRAME_WIDTH * SCALE,FRAME_HEIGHT * SCALE);
         setPreferredSize(size);
         m_oFrame = new JFrame();
     }
     
     public synchronized void start()
     {
-      running = true;
+      m_bRunning = true;
       m_oThread = new Thread(this,"Display");
       m_oThread.start();
     }
     public synchronized void stop()
     {
-        running = false;
+        m_bRunning = false;
         try {
             m_oThread.join();
         } catch (InterruptedException ex) {
@@ -56,7 +65,7 @@ public class Game extends Canvas implements Runnable
         
       
        
-       while(running)
+       while(m_bRunning)
        {
            //will be done at our constraints
                    update();

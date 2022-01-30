@@ -6,6 +6,7 @@ package com.mycompany.rain;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.image.BufferStrategy;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -81,8 +82,14 @@ public class Game extends Canvas implements Runnable
       oGame.start();
      }
 
-    private void render() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void render()
+    {
+     BufferStrategy bs = getBufferStrategy();
+     if(bs == null)
+     {
+         createBufferStrategy(3);
+         return;
+     }
     }
             
             
